@@ -48,7 +48,7 @@ module.exports = (_, options) => {
       ],
     },
     plugins: [
-      new BundleAnalyzerPlugin(),
+      // new BundleAnalyzerPlugin(),
       new CleanWebpackPlugin(),
       new HtmlPlugin({
         template: 'index.html',
