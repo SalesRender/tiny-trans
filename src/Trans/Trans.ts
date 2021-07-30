@@ -7,6 +7,14 @@ export class Trans<Locale extends string> {
 
   content: Content;
 
+  private async setContent<T extends Record<string, unknown>>(content: T | Promise<{ default: T }>): Promise<void> {
+    if (content instanceof Promise) {
+      this.content = (await content).default;
+      return;
+    }
+    this.content = content;
+  }
+
   init<T extends Record<string, unknown>>(params: { translations: Record<Locale, T>; locale: Locale }): Promise<void>;
 
   init<T extends Record<string, unknown>>(params: {
@@ -22,10 +30,12 @@ export class Trans<Locale extends string> {
     const { [locale]: content } = translations;
     this.translations = translations;
     this.locale = locale;
-    if (content instanceof Promise) {
-      this.content = (await content).default;
-    } else {
-      this.content = content;
-    }
+    await this.setContent(content);
+  }
+
+  async changeLocale(locale: Locale): Promise<void> {
+    const { [locale]: content } = this.translations;
+    this.locale = locale;
+    await this.setContent(content);
   }
 }
