@@ -1,5 +1,4 @@
-export type Content = Record<string, unknown>;
-export type DynamicContent<T extends Content> = () => Promise<{ default: T }>;
+import { Content, DynamicContent } from './types';
 
 export class Trans<Locale extends string> {
   locale: Locale;
