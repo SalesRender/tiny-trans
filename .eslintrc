@@ -44,6 +44,7 @@
     "import/extensions": 0,
     "react/prop-types": 0,
     "import/no-unresolved": 0,
+    "no-underscore-dangle": 0,
     "react/jsx-filename-extension": [2, { "extensions": [".ts", ".tsx"] }]
   }
 }

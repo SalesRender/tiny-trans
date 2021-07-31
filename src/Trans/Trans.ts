@@ -8,7 +8,7 @@ export class Trans<Locale extends string> {
 
   content: Content;
 
-  private async setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
+  private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
     if (typeof content === 'function') {
       this.content = (await content()).default;
       return;
@@ -28,12 +28,12 @@ export class Trans<Locale extends string> {
     const { [locale]: content } = translations;
     this.translations = translations;
     this.locale = locale;
-    await this.setContent(content);
+    await this._setContent(content);
   }
 
   async changeLocale(locale: Locale): Promise<void> {
     const { [locale]: content } = this.translations;
     this.locale = locale;
-    await this.setContent(content);
+    await this._setContent(content);
   }
 }
