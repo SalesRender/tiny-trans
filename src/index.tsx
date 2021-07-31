@@ -12,8 +12,13 @@ const trans = new Trans<Locale>();
 
 (async () => {
   // await trans.init({ translations: { ru, en }, locale: Locale.en });
-  await trans.init({ translations: { ru: import('./lang_ru.json'), en: import('./lang_en.json') }, locale: Locale.en });
+  await trans.init({
+    translations: { ru: () => import('./lang_ru.json'), en: () => import('./lang_en.json') },
+    locale: Locale.en,
+  });
   console.log(trans, { ...trans.content });
-  await trans.changeLocale(Locale.ru);
-  console.log(trans, { ...trans.content });
+  setTimeout(async () => {
+    await trans.changeLocale(Locale.ru);
+    console.log(trans, { ...trans.content });
+  }, 5000);
 })();

@@ -1,4 +1,5 @@
 export type Content = Record<string, unknown>;
+export type DynamicContent<T extends Content> = () => Promise<{ default: T }>;
 
 export class Trans<Locale extends string> {
   locale: Locale;
@@ -7,22 +8,19 @@ export class Trans<Locale extends string> {
 
   content: Content;
 
-  private async setContent<T extends Record<string, unknown>>(content: T | Promise<{ default: T }>): Promise<void> {
-    if (content instanceof Promise) {
-      this.content = (await content).default;
+  private async setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
+    if (typeof content === 'function') {
+      this.content = (await content()).default;
       return;
     }
     this.content = content;
   }
 
-  init<T extends Record<string, unknown>>(params: { translations: Record<Locale, T>; locale: Locale }): Promise<void>;
+  init<T extends Content>(params: { translations: Record<Locale, T>; locale: Locale }): Promise<void>;
 
-  init<T extends Record<string, unknown>>(params: {
-    translations: Record<Locale, Promise<{ default: T }>>;
-    locale: Locale;
-  }): Promise<void>;
+  init<T extends Content>(params: { translations: Record<Locale, DynamicContent<T>>; locale: Locale }): Promise<void>;
 
-  async init<T extends Record<string, unknown> | Record<string, Promise<{ default: T }>>>(params: {
+  async init<T extends Content | Record<string, DynamicContent<T>>>(params: {
     translations: Record<Locale, T>;
     locale: Locale;
   }): Promise<void> {
