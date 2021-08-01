@@ -5,7 +5,7 @@ import { defaultPluralFn, setCount, setVariable } from './helpers';
 export type ContentPreparerOptions<Locale extends string> = {
   errorsMode?: ErrorsMode;
   pluralFn?: PluralFn;
-  locale?: Locale;
+  locale: Locale;
 };
 
 export class ContentPreparer<Locale extends string> {
@@ -13,9 +13,12 @@ export class ContentPreparer<Locale extends string> {
 
   private readonly locale: Locale;
 
+  private _content: Content | string;
+
   private readonly pluralFn: ContentPreparerOptions<Locale>['pluralFn'];
 
-  constructor(private _content: Content | string, options: ContentPreparerOptions<Locale> = {}) {
+  constructor(content: Content | string, options: ContentPreparerOptions<Locale>) {
+    this._content = content;
     const { errorsMode = 'throw', pluralFn = defaultPluralFn, locale } = options;
     this.locale = locale;
     this.errorsMode = errorsMode;
