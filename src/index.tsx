@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Trans } from './Trans';
+import { Trans } from './core';
 // import ru from './lang_ru.json';
 // import en from './lang_en.json';
 
