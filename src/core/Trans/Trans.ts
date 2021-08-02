@@ -68,7 +68,7 @@ export class Trans<Locale extends string> {
           const $result = getResult({ ...params, content: this.content });
           if (typeof $result === 'string') return $result;
 
-          throw new InvalidTranslate(`invalid translate: "${$result}"; as a json: ${JSON.stringify($result)}`);
+          throw new InvalidTranslate(`invalid translate: "${result}"; as a json: ${JSON.stringify(result)}`);
         },
         errorsMode,
 
