@@ -1,6 +1,7 @@
 import { Config, Content, ErrorsMode, PluralContent, PluralFn, Variables } from '../types';
-import { InvalidErrorMode, InvalidTranslate } from '../errors';
+import { InvalidTranslate } from '../errors';
 import { defaultPluralFn, setCount, setVariable } from './helpers';
+import { validate } from '../validate';
 
 export type ContentPreparerOptions<Locale extends string> = {
   errorsMode?: ErrorsMode;
@@ -27,51 +28,33 @@ export class ContentPreparer<Locale extends string> {
 
   setVariables(variables: Variables): this {
     if (!variables || typeof variables !== 'object') return this;
-    this._content = this.validate(
-      () => {
-        if (typeof this._content !== 'string') {
-          throw new InvalidTranslate(
-            `invalid content: "${this._content}"; as a json: ${JSON.stringify(this._content)}`
-          );
-        }
-        let result: string;
-        const keys = Object.keys(variables);
-        for (let i = 0; i < keys.length; i++) {
-          const key = keys[i];
-          result = setVariable(this._content, { key, value: variables[key] });
-        }
-        return result;
-      },
-      () => ''
-    );
+    this._content = validate(this.errorsMode, () => {
+      if (typeof this._content !== 'string') {
+        throw new InvalidTranslate(`invalid content: "${this._content}"; as a json: ${JSON.stringify(this._content)}`);
+      }
+      let result: string;
+      const keys = Object.keys(variables);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        result = setVariable(this._content, { key, value: variables[key] });
+      }
+      return result;
+    });
     return this;
-  }
-
-  private validate(callback: () => string, errorCallback: () => string): string | never {
-    try {
-      return callback();
-    } catch (e) {
-      if (this.errorsMode === 'ignore') return errorCallback();
-      if (this.errorsMode === 'throw') throw e;
-      if (typeof this.errorsMode === 'function') return this.errorsMode(e);
-      throw new InvalidErrorMode(`errorsMode: "${this.errorsMode}"; as a json: ${JSON.stringify(this.errorsMode)}`);
-    }
   }
 
   setCount(count: number): this {
     if (!count && count !== 0) return this;
-    this._content = this.validate(
-      () =>
-        setVariable(
-          setCount({
-            count,
-            content: this._content as PluralContent,
-            pluralFn: this.pluralFn,
-            locale: this.locale,
-          }),
-          { key: Config.count, value: count.toString() }
-        ),
-      () => ''
+    this._content = validate(this.errorsMode, () =>
+      setVariable(
+        setCount({
+          count,
+          content: this._content as PluralContent,
+          pluralFn: this.pluralFn,
+          locale: this.locale,
+        }),
+        { key: Config.count, value: count.toString() }
+      )
     );
     return this;
   }

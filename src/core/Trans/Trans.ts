@@ -1,6 +1,7 @@
 import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables } from '../types';
-import { getContent, parsePath } from './helpers';
-import { ContentPreparer } from '../ContentPreparer';
+import { getContent, getResult, parsePath } from './helpers';
+import { InvalidTranslate } from '../errors';
+import { validate } from '../validate';
 
 export class Trans<Locale extends string> {
   locale: Locale;
@@ -53,17 +54,25 @@ export class Trans<Locale extends string> {
   createTranslate<T extends Variables = Variables>(path: string | TemplateStringsArray): Translate<T> {
     const parsedPath = parsePath(path);
     const content = getContent(this.content, parsedPath);
+
     return ($path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
       const { errorsMode, count, variables } = options;
-      const $parsedPath = parsePath($path);
-      const result = getContent(content as Content, $parsedPath);
-      return new ContentPreparer(result, {
+      return validate(
         errorsMode,
-        locale: this.locale,
-        pluralFn: (this.pluralRecord || ({} as Record<Locale, PluralFn>))[this.locale],
-      })
-        .setCount(count)
-        .setVariables(variables).content as string;
+        () => {
+          const { locale, pluralRecord } = this;
+          const params = { path: $path, count, variables, errorsMode, locale, pluralRecord };
+
+          const result = getResult({ ...params, content });
+          if (typeof result === 'string') return result;
+
+          const $result = getResult({ ...params, content: this.content });
+          if (typeof $result === 'string') return $result;
+
+          throw new InvalidTranslate(`invalid translate: "${$result}"; as a json: ${JSON.stringify($result)}`);
+        },
+        `path1: "${[path, $path].filter(Boolean).join('.')}"; path2: "${$path}";`
+      );
     };
   }
 }

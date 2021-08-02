@@ -1,5 +1,6 @@
-import { Content } from '../types';
+import { Content, ErrorsMode, PluralFn, Variables } from '../types';
 import { InvalidPath } from '../errors';
+import { ContentPreparer } from '../ContentPreparer';
 
 export type PathArray = string[];
 
@@ -23,8 +24,36 @@ export const getContentRecursive = (content: Content, pathArray: PathArray): Con
   return content;
 };
 
-export const getContent = (content: Content, path: string): Content | string => {
+export const getContent = (content: Content | string, path: string): Content | string => {
   if (!content || typeof content !== 'object') return content;
   const pathArray = preparePath(path);
   return getContentRecursive(content, pathArray);
+};
+
+export const getResult = ({
+  path,
+  content,
+  count,
+  variables,
+  errorsMode,
+  pluralRecord,
+  locale,
+}: {
+  path: string | TemplateStringsArray;
+  content: Content | string;
+  errorsMode: ErrorsMode;
+  locale: string;
+  count: number;
+  pluralRecord: Record<string, PluralFn>;
+  variables: Variables;
+}): Content | string => {
+  const $parsedPath = parsePath(path);
+  const $content = getContent(content, $parsedPath);
+  return new ContentPreparer($content, {
+    errorsMode,
+    locale,
+    pluralFn: (pluralRecord || {})[locale],
+  })
+    .setCount(count)
+    .setVariables(variables).content;
 };
