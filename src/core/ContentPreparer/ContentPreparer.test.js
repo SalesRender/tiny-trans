@@ -16,10 +16,17 @@ describe('ContentPreparer', () => {
         expect(new ContentPreparer('test', { locale: 'ru' }).setVariables({ test: 'wow' }).content).toBe('test');
       });
 
-      it('right setVariables', () => {
+      it('right setVariables 1', () => {
         expect(new ContentPreparer('test ${test}', { locale: 'ru' }).setVariables({ test: 'wow' }).content).toBe(
           'test wow'
         );
+      });
+
+      it('right setVariables 2', () => {
+        expect(
+          new ContentPreparer('test ${test} ${test2}', { locale: 'ru' }).setVariables({ test: 'wow', test2: 'mow' })
+            .content
+        ).toBe('test wow mow');
       });
 
       it('right complex invalid setVariables', () => {

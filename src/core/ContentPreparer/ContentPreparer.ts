@@ -28,33 +28,35 @@ export class ContentPreparer<Locale extends string> {
 
   setVariables(variables: Variables): this {
     if (!variables || typeof variables !== 'object') return this;
-    this._content = validate(this.errorsMode, () => {
+    this._content = validate(() => {
       if (typeof this._content !== 'string') {
         throw new InvalidTranslate(`invalid content: "${this._content}"; as a json: ${JSON.stringify(this._content)}`);
       }
-      let result: string;
+      let result = this._content;
       const keys = Object.keys(variables);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        result = setVariable(this._content, { key, value: variables[key] });
+        result = setVariable(result, { key, value: variables[key] });
       }
       return result;
-    });
+    }, this.errorsMode);
     return this;
   }
 
   setCount(count: number): this {
     if (!count && count !== 0) return this;
-    this._content = validate(this.errorsMode, () =>
-      setVariable(
-        setCount({
-          count,
-          content: this._content as PluralContent,
-          pluralFn: this.pluralFn,
-          locale: this.locale,
-        }),
-        { key: Config.count, value: count.toString() }
-      )
+    this._content = validate(
+      () =>
+        setVariable(
+          setCount({
+            count,
+            content: this._content as PluralContent,
+            pluralFn: this.pluralFn,
+            locale: this.locale,
+          }),
+          { key: Config.count, value: count.toString() }
+        ),
+      this.errorsMode
     );
     return this;
   }

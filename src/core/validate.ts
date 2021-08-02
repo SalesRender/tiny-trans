@@ -1,7 +1,7 @@
 import { ErrorsMode } from './types';
 import { InvalidErrorMode } from './errors';
 
-export const validate = (errorsMode: ErrorsMode, callback: () => string, extra = ''): string | never => {
+export const validate = (callback: () => string, errorsMode: ErrorsMode = 'throw', extra = ''): string | never => {
   try {
     return callback();
   } catch (e) {

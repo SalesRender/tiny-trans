@@ -58,7 +58,6 @@ export class Trans<Locale extends string> {
     return ($path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
       const { errorsMode, count, variables } = options;
       return validate(
-        errorsMode,
         () => {
           const { locale, pluralRecord } = this;
           const params = { path: $path, count, variables, errorsMode, locale, pluralRecord };
@@ -71,7 +70,9 @@ export class Trans<Locale extends string> {
 
           throw new InvalidTranslate(`invalid translate: "${$result}"; as a json: ${JSON.stringify($result)}`);
         },
-        `path1: "${[path, $path].filter(Boolean).join('.')}"; path2: "${$path}";`
+        errorsMode,
+
+        `full path: "${[path, $path].filter(Boolean).join('.')}"; translate path: "${$path}";`
       );
     };
   }

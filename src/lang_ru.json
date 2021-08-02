@@ -1,7 +1,16 @@
 {
-  "test": {
-    "test1": {
-      "test2": "Тест"
+  "screens": {
+    "Home": {
+      "title": "Заголовок",
+      "description": "Описание ${desc} ${name}",
+      "plural": {
+        "zero": "ноль",
+        "one": "один",
+        "two": "два",
+        "few": "несколько",
+        "many": "много",
+        "other": "другое"
+      }
     }
   }
 }
