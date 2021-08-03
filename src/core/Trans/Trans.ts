@@ -71,7 +71,6 @@ export class Trans<Locale extends string> {
           throw new InvalidTranslate(`invalid translate: "${result}"; as a json: ${JSON.stringify(result)}`);
         },
         errorsMode,
-
         `full path: "${[path, $path].filter(Boolean).join('.')}"; translate path: "${$path}";`
       );
     };

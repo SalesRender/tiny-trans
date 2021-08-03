@@ -132,6 +132,13 @@ describe('Trans', () => {
             '"invalid translate: \\"[object Object]\\"; as a json: {\\"title\\":\\"Title\\",\\"description\\":\\"Description ${desc} ${name}\\",\\"plural\\":{\\"zero\\":\\"zero\\",\\"one\\":\\"one\\",\\"two\\":\\"two\\",\\"few\\":\\"few\\",\\"many\\":\\"many\\",\\"other\\":\\"other ${test} ${test1}\\"}}. full path: \\"screens.Home\\"; translate path: \\"Home\\";"'
           );
         });
+
+        it('broken path 2', () => {
+          const translate = trans.createTranslate`screens.Home.broken`;
+          expect(() => translate`Home`).toThrowErrorMatchingInlineSnapshot(
+            '"invalid translate: \\"undefined\\"; as a json: undefined. full path: \\"screens.Home.broken.Home\\"; translate path: \\"Home\\";"'
+          );
+        });
       });
 
       describe('ignore', () => {
@@ -144,6 +151,11 @@ describe('Trans', () => {
           const translate = trans.createTranslate`screens`;
           expect(translate(`Home`, { errorsMode: 'ignore' })).toBe('');
         });
+
+        it('broken path 2', () => {
+          const translate = trans.createTranslate`screens.Home.broken`;
+          expect(translate(`Home`, { errorsMode: 'ignore' })).toBe('');
+        });
       });
 
       describe('handle', () => {
@@ -154,6 +166,11 @@ describe('Trans', () => {
 
         it('broken path', () => {
           const translate = trans.createTranslate`screens`;
+          expect(translate(`Home`, { errorsMode: (e) => `${e.name}. test` })).toBe('Error. test');
+        });
+
+        it('broken path 2', () => {
+          const translate = trans.createTranslate`screens.Home.broken`;
           expect(translate(`Home`, { errorsMode: (e) => `${e.name}. test` })).toBe('Error. test');
         });
       });
