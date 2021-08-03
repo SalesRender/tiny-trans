@@ -1,6 +1,5 @@
-import { Content, ErrorsMode, PluralFn, Variables } from '../types';
-import { InvalidPath } from '../errors';
-import { ContentPreparer } from '../ContentPreparer';
+import { Content, ErrorsMode } from '../types';
+import { InvalidErrorMode, InvalidPath } from '../errors';
 
 export type PathArray = string[];
 
@@ -30,30 +29,14 @@ export const getContent = (content: Content | string, path: string): Content | s
   return getContentRecursive(content, pathArray);
 };
 
-export const getResult = ({
-  path,
-  content,
-  count,
-  variables,
-  errorsMode,
-  pluralRecord,
-  locale,
-}: {
-  path: string | TemplateStringsArray;
-  content: Content | string;
-  errorsMode: ErrorsMode;
-  locale: string;
-  count: number;
-  pluralRecord: Record<string, PluralFn>;
-  variables: Variables;
-}): Content | string => {
-  const $parsedPath = parsePath(path);
-  const $content = getContent(content, $parsedPath);
-  return new ContentPreparer($content, {
-    errorsMode,
-    locale,
-    pluralFn: (pluralRecord || {})[locale],
-  })
-    .setCount(count)
-    .setVariables(variables).content;
+export const validate = (callback: () => string, errorsMode: ErrorsMode = 'throw', extra = ''): string | never => {
+  try {
+    return callback();
+  } catch (e) {
+    const error = new Error([`${e.message}`, extra].filter(Boolean).join('. '));
+    if (errorsMode === 'ignore') return '';
+    if (errorsMode === 'throw') throw error;
+    if (typeof errorsMode === 'function') return errorsMode(error);
+    throw new InvalidErrorMode(`errorsMode: "${errorsMode}"; as a json: ${JSON.stringify(errorsMode)}`);
+  }
 };
