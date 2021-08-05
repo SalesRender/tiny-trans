@@ -64,17 +64,19 @@ export class Trans<Locale extends string> {
         () => {
           const { locale, pluralRecord } = this;
 
+          // find in the current content
           const result = this.contentPreparer
             .set(content, { path, locale, pluralFn: pluralRecord?.[locale] })
             .setCount(count)
             .setVariables(variables).content;
           if (typeof result === 'string') return result;
 
-          const $result = this.contentPreparer
+          // find in the root
+          const rootResult = this.contentPreparer
             .set(this.content, { path, locale, pluralFn: pluralRecord?.[locale] })
             .setCount(count)
             .setVariables(variables).content;
-          if (typeof $result === 'string') return $result;
+          if (typeof rootResult === 'string') return rootResult;
 
           throw new InvalidTranslate(`invalid translate: "${result}"; as a json: ${JSON.stringify(result)}`);
         },
