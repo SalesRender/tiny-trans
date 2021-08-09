@@ -42,8 +42,8 @@ const trans = new Trans<Locale>();
 })();
 ```
 
-###Methods
-####init
+### Methods
+#### init
 
 ```
 export type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
@@ -63,18 +63,18 @@ init(params: {
   }): Promise<void> 
 ```
 
-####changeLocale
+#### changeLocale
 
 ```
 changeLocale(locale: Locale): Promise<void>
 ```
 
-####createTranslate
+#### createTranslate
 
 ```
 createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T>
 ```
-####translate
+#### translate
 
 ```
 export type Variables = Record<string, string>;
