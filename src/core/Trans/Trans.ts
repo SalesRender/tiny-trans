@@ -3,7 +3,7 @@ import { getContent, parsePath, validate } from './helpers';
 import { InvalidTranslate } from '../errors';
 import { ContentPreparer } from '../ContentPreparer';
 
-export class Trans<Locale extends string> {
+export class Trans<Locale extends string = string> {
   locale: Locale;
 
   private translations: Record<Locale, Content>;
