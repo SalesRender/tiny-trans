@@ -1,0 +1,11 @@
+.eslint
+.eslintignore
+.babelrc
+.prettierrc
+declarations.d.ts
+jestSetupFile.js
+tsconfig.json
+webpack.config
+yarn.lock
+.husky
+.jest

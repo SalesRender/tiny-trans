@@ -1,15 +1,12 @@
 {
   "name": "sp-trans",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
-  "sideEffects": [
-    "**/*.sass"
-  ],
   "scripts": {
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --mode development -c ./webpack.config.dev.js",
     "lint": "eslint --fix src",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production -c ./webpack.config.prod.js",
     "test": "jest src",
     "prepare": "husky install"
   },
