@@ -1,9 +1,9 @@
-import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables } from '../types';
+import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables, Trans as ITrans } from '../types';
 import { getContent, parsePath, validate } from './helpers';
 import { InvalidTranslate } from '../errors';
 import { ContentPreparer } from '../ContentPreparer';
 
-export class Trans<Locale extends string = string> {
+export class Trans<Locale extends string = string> implements ITrans<Locale> {
   locale: Locale;
 
   private translations: Record<Locale, Content>;
@@ -21,18 +21,6 @@ export class Trans<Locale extends string = string> {
     }
     this.content = content;
   }
-
-  init<T extends Content>(params: {
-    translations: Record<Locale, T>;
-    locale: Locale;
-    pluralRecord?: Record<Locale, PluralFn>;
-  }): Promise<void>;
-
-  init<T extends Content>(params: {
-    translations: Record<Locale, DynamicContent<T>>;
-    locale: Locale;
-    pluralRecord?: Record<Locale, PluralFn>;
-  }): Promise<void>;
 
   async init<T extends Content | Record<string, DynamicContent<T>>>(params: {
     translations: Record<Locale, T>;

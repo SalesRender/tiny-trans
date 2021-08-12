@@ -2,8 +2,6 @@
 const path = require('path');
 const HtmlPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const port = 8080;
 const host = 'localhost';
@@ -13,7 +11,7 @@ const src = path.join(__dirname, 'src');
 module.exports = {
   stats: 'minimal',
   context: src,
-  entry: './index.tsx',
+  entry: './index.js',
   output: {
     path: dist,
     publicPath: `http://${host}:${port}/`,
@@ -30,23 +28,8 @@ module.exports = {
     modules: [src, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
   },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          output: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      }),
-    ],
-  },
   plugins: [
     // new BundleAnalyzerPlugin(),
-    new CleanWebpackPlugin(),
     new HtmlPlugin({
       template: 'index.html',
       minify: {

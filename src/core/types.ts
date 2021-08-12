@@ -29,3 +29,25 @@ export type Translate<T extends Variables = Variables> = (
   path: string | TemplateStringsArray,
   options?: TranslateOptions<T>
 ) => string;
+
+export interface Trans<Locale extends string = string> {
+  locale: Locale;
+
+  content: Content;
+
+  init<T extends Content>(params: {
+    translations: Record<Locale, T>;
+    locale: Locale;
+    pluralRecord?: Record<Locale, PluralFn>;
+  }): Promise<void>;
+
+  init<T extends Content>(params: {
+    translations: Record<Locale, DynamicContent<T>>;
+    locale: Locale;
+    pluralRecord?: Record<Locale, PluralFn>;
+  }): Promise<void>;
+
+  changeLocale(locale: Locale): Promise<void>;
+
+  createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T>;
+}

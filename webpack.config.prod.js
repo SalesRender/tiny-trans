@@ -3,8 +3,6 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const port = 8080;
-const host = 'localhost';
 const dist = path.join(__dirname, 'dist');
 const src = path.join(__dirname, 'src');
 
@@ -14,14 +12,10 @@ module.exports ={
   entry: './index.tsx',
   output: {
     path: dist,
-    publicPath: `http://${host}:${port}/`,
-  },
-  devServer: {
-    host,
-    port,
-    hot: true,
-    historyApiFallback: true,
-    overlay: true,
+    library: {
+      name: 'Trans',
+      type: 'umd',
+    },
   },
   resolve: {
     modules: [src, 'node_modules'],
