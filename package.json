@@ -1,5 +1,5 @@
 {
-  "name": "trans",
+  "name": "sp-trans",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -50,7 +50,6 @@
     ],
     "cacheDirectory": ".jest/cache"
   },
-  "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/node": "^7.14.7",
