@@ -13,5 +13,3 @@ yarn.lock
 .idea
 src
 src/*
-index.d.ts
-index.saved.d.ts

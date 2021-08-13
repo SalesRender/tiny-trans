@@ -1,6 +1,6 @@
 {
-  "name": "sp-trans",
-  "version": "1.0.14",
+  "name": "tiny-trans",
+  "version": "1.0.2",
   "license": "MIT",
   "description": "simple localisation manager",
   "author": {
@@ -17,7 +17,7 @@
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "files": [
-    "src"
+    "dist"
   ],
   "readmeFilename": "README.md",
   "testling": {
