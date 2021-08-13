@@ -1,1 +1,1 @@
-export * from './Trans/Trans';
+export * from './Trans';

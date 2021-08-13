@@ -1,6 +1,6 @@
 {
   "name": "sp-trans",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "description": "simple localisation manager",
   "author": {
@@ -12,7 +12,7 @@
   "bugs": "https://github.com/spirit-drive/trans/issues",
   "repository": "git@github.com:spirit-drive/trans.git",
   "main": "dist/main.js",
-  "types": "index.d.ts",
+  "types": "src/index.d.ts",
   "files": [
     "src"
   ],

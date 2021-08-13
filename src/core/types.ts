@@ -30,7 +30,7 @@ export type Translate<T extends Variables = Variables> = (
   options?: TranslateOptions<T>
 ) => string;
 
-export interface Trans<Locale extends string = string> {
+export declare class Trans<Locale extends string = string> {
   locale: Locale;
 
   content: Content;
