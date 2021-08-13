@@ -20,7 +20,7 @@ export type TranslateOptions<T extends Variables = Variables> = {
    * */
   count?: number;
   /**
-   * for replaced the variable patters - {#variable}
+   * for replaced the variable patters - ${variable}
    * */
   variables?: T;
 };

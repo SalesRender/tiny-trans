@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "skipLibCheck": true,
     "module": "esnext",
     "sourceMap": true,

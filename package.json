@@ -1,6 +1,6 @@
 {
   "name": "sp-trans",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "license": "MIT",
   "description": "simple localisation manager",
   "author": {
@@ -12,7 +12,7 @@
   "bugs": "https://github.com/spirit-drive/trans/issues",
   "repository": "git@github.com:spirit-drive/trans.git",
   "main": "dist/main.js",
-  "types": "src/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "src"
   ],
@@ -26,6 +26,7 @@
     "lint": "eslint --fix src",
     "build": "webpack --mode production -c ./webpack.config.prod.js",
     "test": "jest src",
+    "publish": "git push --tags && npm publish",
     "prepare": "husky install"
   },
   "husky": {
