@@ -16,6 +16,7 @@ module.exports ={
       type: 'umd',
     },
   },
+  devtool: 'source-map',
   resolve: {
     modules: [src, 'node_modules'],
     extensions: ['.tsx', '.ts', '.js'],
