@@ -1,13 +1,16 @@
 {
   "name": "sp-trans",
-  "version": "1.0.6",
+  "version": "1.0.14",
   "license": "MIT",
   "description": "simple localisation manager",
   "author": {
     "name": "Igor Zvyagin",
     "email": "spirit-drive@yandex.ru"
   },
-  "keywords": ["localisation", "locale"],
+  "keywords": [
+    "localisation",
+    "locale"
+  ],
   "homepage": "https://github.com/spirit-drive/trans",
   "bugs": "https://github.com/spirit-drive/trans/issues",
   "repository": "git@github.com:spirit-drive/trans.git",
@@ -26,7 +29,7 @@
     "lint": "eslint --fix src",
     "build": "webpack --mode production -c ./webpack.config.prod.js",
     "test": "jest src",
-    "publish": "git push --tags && npm publish",
+    "publish": "npm publish",
     "prepare": "husky install"
   },
   "husky": {
@@ -113,6 +116,5 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
-  },
-  "dependencies": {}
+  }
 }

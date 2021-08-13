@@ -11,7 +11,7 @@ yarn.lock
 .husky
 .jest
 .idea
-src/index.html
-src/index.js
-src/lang_en.json
-src/ru.json
+src
+src/*
+index.d.ts
+index.saved.d.ts

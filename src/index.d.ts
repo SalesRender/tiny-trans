@@ -1,1 +1,0 @@
-export { Trans } from './core';
