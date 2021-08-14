@@ -1,9 +1,10 @@
-import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables, Trans as ITrans } from '../types';
+import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables } from '../types';
 import { getContent, parsePath, validate } from './helpers';
 import { InvalidTranslate } from '../errors';
 import { ContentPreparer } from '../ContentPreparer';
+import { EventsManager } from './EventsManager';
 
-export class Trans<Locale extends string = string> implements ITrans<Locale> {
+export class Trans<Locale extends string = string> extends EventsManager {
   locale: Locale;
 
   private translations: Record<Locale, Content>;
@@ -15,11 +16,13 @@ export class Trans<Locale extends string = string> implements ITrans<Locale> {
   content: Content;
 
   private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
+    this.emit('loadstart');
     if (typeof content === 'function') {
       this.content = (await content()).default;
-      return;
+    } else {
+      this.content = content;
     }
-    this.content = content;
+    this.emit('loadend');
   }
 
   async init<T extends Content | Record<string, DynamicContent<T>>>(params: {
@@ -66,7 +69,11 @@ export class Trans<Locale extends string = string> implements ITrans<Locale> {
             .setVariables(variables).content;
           if (typeof rootResult === 'string') return rootResult;
 
-          throw new InvalidTranslate(`invalid translate: "${result}"; as a json: ${JSON.stringify(result)}`);
+          throw new InvalidTranslate(
+            `invalid translate! result: "${result}"; result as a json: ${JSON.stringify(
+              result
+            )}; rootResult: "${rootResult}"; rootResult as a json: ${JSON.stringify(rootResult)}`
+          );
         },
         errorsMode,
         `full path: "${[module, path].filter(Boolean).join('.')}"; translate path: "${path}";`

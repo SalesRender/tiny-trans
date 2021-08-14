@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { TransError } from './errors';
 
 export type Content = Record<string, unknown>;
@@ -6,6 +7,24 @@ export type Variables = Record<string, string>;
 export type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
 export type PluralContent = Partial<Record<Intl.LDMLPluralRule, string>>;
 export type PluralFn = (count: number, locale: string) => Intl.LDMLPluralRule;
+export type Handler = () => void;
+export type LoadStartEvent = 'loadstart';
+export type LoadEndEvent = 'loadend';
+
+export type Event = LoadEndEvent | LoadStartEvent;
+
+export declare class EventsManager {
+  handlersMap: Map<Event, Handler[]>;
+
+  private _getHandlers(event: Event, handler: Handler): Handler[];
+
+  addEventListener(event: Event, handler: Handler): void;
+
+  removeEventListener(event: Event, handler: Handler): void;
+
+  emit(event: Event): void;
+}
+
 export enum Config {
   count = 'COUNT',
 }
@@ -30,7 +49,7 @@ export type Translate<T extends Variables = Variables> = (
   options?: TranslateOptions<T>
 ) => string;
 
-export declare class Trans<Locale extends string = string> {
+export declare class Trans<Locale extends string = string> extends EventsManager {
   locale: Locale;
 
   content: Content;
