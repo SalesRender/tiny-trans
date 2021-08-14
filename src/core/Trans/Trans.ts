@@ -50,6 +50,9 @@ export class Trans<Locale extends string = string> extends EventsManager {
     const content = getContent(this.content, parsedPath);
 
     return (path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
+      // for loading case
+      if (!this.content) return null;
+
       const { errorsMode, count, variables } = options;
       return validate(
         () => {
