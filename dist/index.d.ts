@@ -61,13 +61,7 @@ export declare class Trans<Locale extends string = string> extends EventsManager
   content: Content;
 
   init(params: {
-    translations: Record<Locale, Content>;
-    locale: Locale;
-    pluralRecord?: Record<Locale, PluralFn>;
-  }): Promise<void>;
-
-  init(params: {
-    translations: Record<Locale, DynamicContent>;
+    translations: Record<Locale, Content> | Record<Locale, DynamicContent>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
   }): Promise<void>;
