@@ -7,13 +7,20 @@ import { EventsManager } from './EventsManager';
 export class Trans<Locale extends string = string> extends EventsManager {
   locale: Locale;
 
-  private translations: Record<Locale, Content>;
+  private translations: Record<Locale, Content | DynamicContent>;
 
   private pluralRecord: Record<Locale, PluralFn>;
 
   private contentPreparer: ContentPreparer<Locale>;
 
+  private initial: boolean;
+
   content: Content;
+
+  constructor() {
+    super();
+    this.initial = false;
+  }
 
   private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
     this.emit('loadstart');
@@ -25,8 +32,8 @@ export class Trans<Locale extends string = string> extends EventsManager {
     this.emit('loadend');
   }
 
-  async init<T extends Content | Record<string, DynamicContent<T>>>(params: {
-    translations: Record<Locale, T>;
+  async init(params: {
+    translations: Record<Locale, Content> | Record<Locale, DynamicContent>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
   }): Promise<void> {
@@ -37,6 +44,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
     this.locale = locale;
     this.contentPreparer = new ContentPreparer<Locale>();
     await this._setContent(content);
+    this.initial = true;
   }
 
   async changeLocale(locale: Locale): Promise<void> {
@@ -51,7 +59,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
 
     return (path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
       // for loading case
-      if (!this.content) return null;
+      if (!this.initial) return null;
 
       const { errorsMode, count, variables } = options;
       return validate(

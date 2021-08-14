@@ -122,21 +122,21 @@ describe('Trans', () => {
         it('plural', () => {
           const translate = trans.createTranslate`screens.Home`;
           expect(() => translate`plural`).toThrowErrorMatchingInlineSnapshot(
-            '"invalid translate: \\"[object Object]\\"; as a json: {\\"zero\\":\\"zero\\",\\"one\\":\\"one\\",\\"two\\":\\"two\\",\\"few\\":\\"few\\",\\"many\\":\\"many\\",\\"other\\":\\"other ${test} ${test1}\\"}. full path: \\"screens.Home.plural\\"; translate path: \\"plural\\";"'
+            '"invalid translate! result: \\"[object Object]\\"; result as a json: {\\"zero\\":\\"zero\\",\\"one\\":\\"one\\",\\"two\\":\\"two\\",\\"few\\":\\"few\\",\\"many\\":\\"many\\",\\"other\\":\\"other ${test} ${test1}\\"}; rootResult: \\"undefined\\"; rootResult as a json: undefined. full path: \\"screens.Home.plural\\"; translate path: \\"plural\\";"'
           );
         });
 
         it('broken path', () => {
           const translate = trans.createTranslate`screens`;
           expect(() => translate`Home`).toThrowErrorMatchingInlineSnapshot(
-            '"invalid translate: \\"[object Object]\\"; as a json: {\\"title\\":\\"Title\\",\\"description\\":\\"Description ${desc} ${name}\\",\\"plural\\":{\\"zero\\":\\"zero\\",\\"one\\":\\"one\\",\\"two\\":\\"two\\",\\"few\\":\\"few\\",\\"many\\":\\"many\\",\\"other\\":\\"other ${test} ${test1}\\"}}. full path: \\"screens.Home\\"; translate path: \\"Home\\";"'
+            '"invalid translate! result: \\"[object Object]\\"; result as a json: {\\"title\\":\\"Title\\",\\"description\\":\\"Description ${desc} ${name}\\",\\"plural\\":{\\"zero\\":\\"zero\\",\\"one\\":\\"one\\",\\"two\\":\\"two\\",\\"few\\":\\"few\\",\\"many\\":\\"many\\",\\"other\\":\\"other ${test} ${test1}\\"}}; rootResult: \\"undefined\\"; rootResult as a json: undefined. full path: \\"screens.Home\\"; translate path: \\"Home\\";"'
           );
         });
 
         it('broken path 2', () => {
           const translate = trans.createTranslate`screens.Home.broken`;
           expect(() => translate`Home`).toThrowErrorMatchingInlineSnapshot(
-            '"invalid translate: \\"undefined\\"; as a json: undefined. full path: \\"screens.Home.broken.Home\\"; translate path: \\"Home\\";"'
+            '"invalid translate! result: \\"undefined\\"; result as a json: undefined; rootResult: \\"undefined\\"; rootResult as a json: undefined. full path: \\"screens.Home.broken.Home\\"; translate path: \\"Home\\";"'
           );
         });
       });

@@ -8,7 +8,7 @@ export class InvalidErrorMode extends Error {}
 export type TransError = InvalidTranslate | ContentNotFound | ContentNotPlural;
 
 export type Content = Record<string, unknown>;
-export type DynamicContent<T extends Content> = () => Promise<{ default: T }>;
+export type DynamicContent = () => Promise<{ default: Content }>;
 export type Variables = Record<string, string>;
 export type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
 export type PluralContent = Partial<Record<Intl.LDMLPluralRule, string>>;
@@ -45,7 +45,7 @@ export type TranslateOptions<T extends Variables = Variables> = {
    * */
   count?: number;
   /**
-   * for replaced the variable patters - ${variable}
+   * for replaced the variable patters: ${variable}
    * */
   variables?: T;
 };
@@ -60,14 +60,14 @@ export declare class Trans<Locale extends string = string> extends EventsManager
 
   content: Content;
 
-  init<T extends Content>(params: {
-    translations: Record<Locale, T>;
+  init(params: {
+    translations: Record<Locale, Content>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
   }): Promise<void>;
 
-  init<T extends Content>(params: {
-    translations: Record<Locale, DynamicContent<T>>;
+  init(params: {
+    translations: Record<Locale, DynamicContent>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
   }): Promise<void>;
@@ -76,3 +76,4 @@ export declare class Trans<Locale extends string = string> extends EventsManager
 
   createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T>;
 }
+
