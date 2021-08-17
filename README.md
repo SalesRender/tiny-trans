@@ -1,6 +1,13 @@
 ## Lib for localisation
 Simple translate manager with supporting of dynamic imports, variables and plural.
 
+## Get started
+```
+npm i tiny-trans
+// or
+yarn add tiny-trans 
+```
+
 ## Examples
 
 ##### jsons for examples
@@ -145,7 +152,7 @@ init(params: {
   */
   locale: Locale;
   /**
-  * If you want you can to pass custom plural hanlders
+  * If you want you can pass custom plural hanlders
   */
   pluralRecord?: Record<Locale, PluralFn>;
 }): Promise<void> 
