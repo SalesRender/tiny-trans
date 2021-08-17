@@ -17,8 +17,7 @@
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "readmeFilename": "README.md",
   "testling": {

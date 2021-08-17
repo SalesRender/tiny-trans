@@ -20,6 +20,10 @@ export class Trans<Locale extends string = string> extends EventsManager {
   constructor() {
     super();
     this.initial = false;
+    this.changeLocale = this.changeLocale.bind(this);
+    this._setContent = this._setContent.bind(this);
+    this.init = this.init.bind(this);
+    this.createTranslate = this.createTranslate.bind(this);
   }
 
   private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
