@@ -13,8 +13,9 @@ module.exports ={
     path: dist,
     library: {
       name: 'Trans',
-      type: 'umd',
+      type: 'commonjs2',
     },
+    filename: 'bundle.js',
   },
   devtool: 'source-map',
   resolve: {
