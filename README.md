@@ -28,6 +28,9 @@ yarn add tiny-trans
       }
     }
   }
+  "extrapoint": {
+    "anything": "Что-нибудь"
+  }
 }
 ```
 **lang_en.json**
@@ -46,6 +49,9 @@ yarn add tiny-trans
         "other": "${COUNT} bananas"
       }
     }
+  }
+  "extrapoint": {
+    "anything": "Anything"
   }
 }
 ```
@@ -94,47 +100,77 @@ await trans.init({
 ```
 
 ### Translate
+You can write in different ways:
 ```
-  const translate = trans.createTranslate`screens`;
-  console.log(translate`Home.title`); // en -> Title; ru -> Заголовок  
+// case 1
+const translate = trans.createTranslate`screens`;
+translate`Home.title`; // en -> Title; ru -> Заголовок  
+
+// case 2
+const translate = trans.createTranslate`screens.Home`;
+translate`title`; // en -> Title; ru -> Заголовок  
+
+// case 3
+const translate = trans.createTranslate`screens.Home.title`;
+translate``; // en -> Title; ru -> Заголовок  
+
+// case 4
+const translate = trans.createTranslate``;
+translate`screens.Home.title`; // en -> Title; ru -> Заголовок  
 ```
+
+> **Note:** createTranslate and translate take a TemplateStringsArray or a string as first param.
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  console.log(translate`title`); // en -> Title; ru -> Заголовок  
+createTranslate`some` // it works
+createTranslate('some') // it works too
+createTranslate'some' // it does not work!
+
+translate`some` // it works
+translate('some') // it works too
+translate'some' // it does not work!
 ```
+
 
 ### Translate with variables
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  console.log(translate('description', { variables: { desc: "Any", name: "Name" } })); // en -> Description Any Name; ru -> Описание Any Name  
+const translate = trans.createTranslate`screens.Home`;
+translate('description', { variables: { desc: "Any", name: "Name" } }); // en -> Description Any Name; ru -> Описание Any Name  
 ```
 
 ### Translate with plural
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  console.log(translate('plural', { count: 3 })); // en -> 3 bananas; ru -> 3 банана 
+const translate = trans.createTranslate`screens.Home`;
+translate('plural', { count: 3 }); // en -> 3 bananas; ru -> 3 банана 
 ```
 > **Note:** _COUNT_ is reserved name. Don't name your variables so.
 ```
 translate('description', { variables: { COUNT: "you data" } }) // bad
 ```
 
+### Translate with few points
+In any translation function, you can write the full path, and this works even if a different root path is passed to `createTranslate`
+```
+const translate = trans.createTranslate`screens`;
+translate`Home.title` // en -> Title; ru -> Заголовок  
+translate`extrapoint.anything` // en -> Anything; ru -> Что-нибудь  
+```
+
 ### Error handing
 Sometimes we mistake in translate files, and we need see it
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  translate`plural`
-  // throw "invalid translate! result: "[object Object]"; result as a json: {"zero":"zero bananas","one":"one banane","two":"two bananas","few":"${COUNT} bananas","many":"${COUNT} bananas","other":"${COUNT} bananas"}; rootResult: "undefined"; rootResult as a json: undefined. full path: "screens.Home.plural"; translate path: "plural";"
+const translate = trans.createTranslate`screens.Home`;
+translate`plural`
+// throw "invalid translate! result: "[object Object]"; result as a json: {"zero":"zero bananas","one":"one banane","two":"two bananas","few":"${COUNT} bananas","many":"${COUNT} bananas","other":"${COUNT} bananas"}; rootResult: "undefined"; rootResult as a json: undefined. full path: "screens.Home.plural"; translate path: "plural";"
 ```
 Also you can ignore error:
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  translate(`plural`, { errorsMode: 'ignore' }) // returns ''
+const translate = trans.createTranslate`screens.Home`;
+translate(`plural`, { errorsMode: 'ignore' }) // returns ''
 ```
 Or you can handle error:
 ```
-  const translate = trans.createTranslate`screens.Home`;
-  translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // returns 'handle error'
+const translate = trans.createTranslate`screens.Home`;
+translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // returns 'handle error'
 ```
 
 ## Methods
