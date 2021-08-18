@@ -55,6 +55,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
     const { [locale]: content } = this.translations;
     this.locale = locale;
     await this._setContent(content);
+    this.emit('change-locale');
   }
 
   createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T> {

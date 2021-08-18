@@ -1,14 +1,14 @@
 ## Lib for localisation
 Simple translate manager with supporting of dynamic imports, variables and plural.
 
-## Get started
+## Install
 ```
 npm i tiny-trans
 // or
 yarn add tiny-trans 
 ```
 
-## How to use it?
+## Usage
 
 You can use different files for translates. Below I use follow example files
 **lang_ru.json**
@@ -173,8 +173,9 @@ const translate = trans.createTranslate`screens.Home`;
 translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // returns 'handle error'
 ```
 
-## Methods
-### init
+## API
+### Methods
+#### init
 
 ```
 export type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
@@ -194,18 +195,18 @@ init(params: {
 }): Promise<void> 
 ```
 
-### changeLocale
+#### changeLocale
 
 ```
 changeLocale(locale: Locale): Promise<void>
 ```
 
-### createTranslate
+#### createTranslate
 
 ```
 createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T>
 ```
-### translate
+#### translate
 
 ```
 export type Variables = Record<string, string>;
@@ -231,3 +232,23 @@ export type Translate<T extends Variables = Variables> = (
   options?: TranslateOptions<T>
 ) => string;
 ```
+
+### Events
+
+You can listen trans events.
+```
+// To add
+trans.addEventListener('loadstart', () => void)
+
+// To remove
+trans.removeEventListener('loadstart', () => void)
+```
+
+#### loadstart
+Trigger before dynamic importing 
+
+#### loadend
+Trigger after dynamic importing 
+
+#### change-locale
+Trigger every time by changeLocale method but after `loadend` 

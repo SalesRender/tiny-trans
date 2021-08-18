@@ -16,8 +16,9 @@ export type PluralFn = (count: number, locale: string) => Intl.LDMLPluralRule;
 export type Handler = () => void;
 export type LoadStartEvent = 'loadstart';
 export type LoadEndEvent = 'loadend';
+export type ChangeLocaleEvent = 'change-locale';
 
-export type Event = LoadEndEvent | LoadStartEvent;
+export type Event = LoadEndEvent | LoadStartEvent | ChangeLocaleEvent;
 
 export declare class EventsManager {
   handlersMap: Map<Event, Handler[]>;
