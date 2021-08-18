@@ -8,9 +8,9 @@ npm i tiny-trans
 yarn add tiny-trans 
 ```
 
-## Examples
+## How to use it?
 
-##### jsons for examples
+You can use different files for translates. Below I use follow example files
 **lang_ru.json**
 ```
 {
@@ -57,7 +57,7 @@ yarn add tiny-trans
 ```
 
 ### Creating
-
+You should pass the translations and the starting locale to the init method. You can also explicitly specify possible locales by passing Locale type when creating a Trans instance 
 ```
 import ru from './lang_ru.json';
 import en from './lang_en.json';
@@ -75,7 +75,7 @@ await trans.init({
 ```
 
 ### Creating with dynamic imports
-
+Files of translates will dynamic download. See [webpack code-splitting](https://webpack.js.org/guides/code-splitting/)
 ```
 enum Locale {
   ru = 'ru',
