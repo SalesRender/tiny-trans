@@ -89,13 +89,23 @@ await trans.init({
 });
 ```
 
-> **Note**: under hood it uses `Intl.PluralRules(locale).select(count) `, but it does not support in IE. You can pass in the init method own plural functions object:
-
+### Creating with custom pluralization
+You can pass the custom plural functions. 
+> **Note**: under hood it uses `Intl.PluralRules(locale).select(count) `, but it does not support in IE. You can pass in the init method own plural functions object.
 ```
+import ru from './lang_ru.json';
+import en from './lang_en.json';
+
+enum Locale {
+  ru = 'ru',
+  en = 'en',
+}
+
+const trans = new Trans<Locale>();
 await trans.init({
   translations: { ru, en },
   locale: Locale.en,
-  pluralRecord: { ru: (count: number, locale: string) => Intl.LDMLPluralRule, en: (count: number, locale: string) => Intl.LDMLPluralRule }
+  pluralRecord: { ru: (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other", en: (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other" }
 });
 ```
 
@@ -178,7 +188,7 @@ translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // re
 #### init
 
 ```
-export type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
+type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
 init(params: {
   /**
   * for example: { ru: { test: 'тест' }, en: { test: 'test' } } 
@@ -209,10 +219,10 @@ createTranslate<T extends Variables = Variables>(module: string | TemplateString
 #### translate
 
 ```
-export type Variables = Record<string, string>;
-export type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
+type Variables = Record<string, string>;
+type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
 
-export type TranslateOptions<T extends Variables = Variables> = {
+type TranslateOptions<T extends Variables = Variables> = {
   /**
    * ignore the error, handle error or throw error (by default)
    * */
@@ -227,7 +237,7 @@ export type TranslateOptions<T extends Variables = Variables> = {
   variables?: T;
 };
 
-export type Translate<T extends Variables = Variables> = (
+type Translate<T extends Variables = Variables> = (
   path: string | TemplateStringsArray,
   options?: TranslateOptions<T>
 ) => string;
@@ -236,6 +246,11 @@ export type Translate<T extends Variables = Variables> = (
 ### Events
 
 You can listen trans events. They will be helpful for creating a lib for any frameworks
+* `loadstart` Triggered before only dynamic importing
+* `loadend` Triggered after only dynamic importing
+* `change-locale` Triggered every time by `changeLocale` method but after `loadend` 
+* `init` Triggered single time in the end of `init` method
+
 ```
 // To add
 trans.addEventListener('loadstart', () => void)
@@ -244,14 +259,3 @@ trans.addEventListener('loadstart', () => void)
 trans.removeEventListener('loadstart', () => void)
 ```
 
-#### loadstart
-Triggered before only dynamic importing 
-
-#### loadend
-Triggered after only dynamic importing 
-
-#### change-locale
-Triggered every time by `changeLocale` method but after `loadend` 
-
-#### init
-Triggered single time in the `init` method
