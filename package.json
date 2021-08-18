@@ -32,7 +32,7 @@
     "build": "webpack --mode production -c ./webpack.config.prod.js",
     "test": "jest src",
     "publish": "npm publish",
-    "prepare": "husky install"
+    "husky-prepare": "husky install"
   },
   "husky": {
     "hooks": {
