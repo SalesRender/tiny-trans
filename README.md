@@ -89,7 +89,7 @@ await trans.init({
 });
 ```
 
-> **Note**: under hood lig uses `Intl.PluralRules(locale).select(count) `, but it does not support in IE. You can pass in the init method own plural functions object:
+> **Note**: under hood it uses `Intl.PluralRules(locale).select(count) `, but it does not support in IE. You can pass in the init method own plural functions object:
 
 ```
 await trans.init({
