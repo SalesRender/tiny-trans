@@ -1,4 +1,4 @@
-## Lib for localisation
+# tiny-trans - lib for localisation
 Simple translate manager with supporting of dynamic imports, variables and plural.
 
 ## Install
@@ -11,6 +11,7 @@ yarn add tiny-trans
 ## Usage
 
 You can use different files for translates. Below I use follow example files
+
 **lang_ru.json**
 ```
 {

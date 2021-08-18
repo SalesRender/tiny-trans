@@ -13,7 +13,7 @@ module.exports ={
     path: dist,
     library: {
       name: 'Trans',
-      type: 'commonjs2',
+      type: 'umd',
     },
     filename: 'bundle.js',
   },
