@@ -235,7 +235,7 @@ export type Translate<T extends Variables = Variables> = (
 
 ### Events
 
-You can listen trans events.
+You can listen trans events. They will be helpful for creating a lib for any frameworks
 ```
 // To add
 trans.addEventListener('loadstart', () => void)
@@ -245,13 +245,13 @@ trans.removeEventListener('loadstart', () => void)
 ```
 
 #### loadstart
-Trigger before only dynamic importing 
+Triggered before only dynamic importing 
 
 #### loadend
-Trigger after only dynamic importing 
+Triggered after only dynamic importing 
 
 #### change-locale
-Trigger every time by changeLocale method but after `loadend` 
+Triggered every time by `changeLocale` method but after `loadend` 
 
 #### init
-Trigger single time after `loadstart` and `loadend` in the `init` method
+Triggered single time in the `init` method
