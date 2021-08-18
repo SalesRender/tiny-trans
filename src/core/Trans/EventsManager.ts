@@ -2,8 +2,9 @@ export type Handler = () => void;
 export type LoadStartEvent = 'loadstart';
 export type LoadEndEvent = 'loadend';
 export type ChangeLocaleEvent = 'change-locale';
+export type InitEvent = 'init';
 
-export type Event = LoadEndEvent | LoadStartEvent | ChangeLocaleEvent;
+export type Event = LoadEndEvent | LoadStartEvent | ChangeLocaleEvent | InitEvent;
 
 export class EventsManager {
   handlersMap: Map<Event, Handler[]>;
@@ -33,7 +34,7 @@ export class EventsManager {
     }
   }
 
-  emit(event: Event): void {
+  protected emit(event: Event): void {
     if (this.handlersMap.has(event)) {
       const handlers = this.handlersMap.get(event);
       handlers.forEach((handler) => handler(), this);

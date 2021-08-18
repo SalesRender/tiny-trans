@@ -11,8 +11,9 @@ export type Handler = () => void;
 export type LoadStartEvent = 'loadstart';
 export type LoadEndEvent = 'loadend';
 export type ChangeLocaleEvent = 'change-locale';
+export type InitEvent = 'init';
 
-export type Event = LoadEndEvent | LoadStartEvent | ChangeLocaleEvent;
+export type Event = LoadEndEvent | LoadStartEvent | ChangeLocaleEvent | InitEvent;
 
 export declare class EventsManager {
   handlersMap: Map<Event, Handler[]>;
@@ -23,7 +24,7 @@ export declare class EventsManager {
 
   removeEventListener(event: Event, handler: Handler): void;
 
-  emit(event: Event): void;
+  protected emit(event: Event): void;
 }
 
 export enum Config {

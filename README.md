@@ -245,10 +245,13 @@ trans.removeEventListener('loadstart', () => void)
 ```
 
 #### loadstart
-Trigger before dynamic importing 
+Trigger before only dynamic importing 
 
 #### loadend
-Trigger after dynamic importing 
+Trigger after only dynamic importing 
 
 #### change-locale
 Trigger every time by changeLocale method but after `loadend` 
+
+#### init
+Trigger single time after `loadstart` and `loadend` in the `init` method

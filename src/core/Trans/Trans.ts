@@ -27,13 +27,13 @@ export class Trans<Locale extends string = string> extends EventsManager {
   }
 
   private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
-    this.emit('loadstart');
     if (typeof content === 'function') {
+      this.emit('loadstart');
       this.content = (await content()).default;
+      this.emit('loadend');
     } else {
       this.content = content;
     }
-    this.emit('loadend');
   }
 
   async init(params: {
@@ -49,6 +49,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
     this.contentPreparer = new ContentPreparer<Locale>();
     await this._setContent(content);
     this.initial = true;
+    this.emit('init');
   }
 
   async changeLocale(locale: Locale): Promise<void> {
