@@ -1,5 +1,6 @@
 # tiny-trans - lib for localisation
 Simple translate manager with supporting of dynamic imports, variables and plural.
+You can use a lib for react applications [react-tiny-trans](https://www.npmjs.com/package/react-tiny-trans)
 
 ## Install
 ```
