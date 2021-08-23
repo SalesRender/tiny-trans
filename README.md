@@ -251,7 +251,7 @@ You can listen trans events. They will be helpful for creating a lib for any fra
 * `loadstart` Triggered before only dynamic importing
 * `loadend` Triggered after only dynamic importing
 * `change-locale` Triggered every time by `changeLocale` method but after `loadend` 
-* `init` Triggered single time in the end of `init` method
+* `init` Triggered single time in the end by `init` method
 
 ```
 // To add
