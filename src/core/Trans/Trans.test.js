@@ -63,7 +63,7 @@ describe('Trans', () => {
 
   describe('main', () => {
     const trans = new Trans();
-    trans.init({ translations, locale: 'en' });
+    trans.init({ translations, locale: 'en', errorsMode: 'throw' });
 
     describe('create translate', () => {
       it('case 1', () => {

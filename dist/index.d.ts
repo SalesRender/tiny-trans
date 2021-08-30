@@ -10,7 +10,7 @@ export type TransError = InvalidTranslate | ContentNotFound | ContentNotPlural;
 export type Content = Record<string, unknown>;
 export type DynamicContent = () => Promise<{ default: Content }>;
 export type Variables = Record<string, string>;
-export type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
+export type ErrorsMode = 'ignore' | 'throw' | 'console' | ((error: TransError) => string);
 export type PluralContent = Partial<Record<Intl.LDMLPluralRule, string>>;
 export type PluralFn = (count: number, locale: string) => Intl.LDMLPluralRule;
 export type Handler = ((...args: unknown[]) => void) | (() => void);
@@ -51,7 +51,7 @@ export enum Config {
 
 export type TranslateOptions<T extends Variables = Variables> = {
   /**
-   * ignore the error, handle error or throw error (by default)
+   * ignore the error, handle error, show in the console or throw error (by default)
    * */
   errorsMode?: ErrorsMode;
   /**
@@ -71,6 +71,8 @@ export type Translate<T extends Variables = Variables> = (
 
 export declare class Trans<Locale extends string = string> extends EventsManager {
   locale: Locale;
+
+  errorsMode: ErrorsMode;
 
   content: Content;
 

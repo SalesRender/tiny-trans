@@ -222,11 +222,11 @@ createTranslate<T extends Variables = Variables>(module: string | TemplateString
 
 ```
 type Variables = Record<string, string>;
-type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
+type ErrorsMode = 'ignore' | 'throw' | 'console' | ((error: TransError) => string);
 
 type TranslateOptions<T extends Variables = Variables> = {
   /**
-   * ignore the error, handle error or throw error (by default)
+   * ignore the error, handle error, show in the console or throw error (by default)
    * */
   errorsMode?: ErrorsMode;
   /**

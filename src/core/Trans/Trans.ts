@@ -1,4 +1,4 @@
-import { Content, DynamicContent, PluralFn, Translate, TranslateOptions, Variables } from '../types';
+import { Content, DynamicContent, ErrorsMode, PluralFn, Translate, TranslateOptions, Variables } from '../types';
 import { getContent, parsePath, validate } from './helpers';
 import { InvalidTranslate } from '../errors';
 import { ContentPreparer } from '../ContentPreparer';
@@ -6,6 +6,8 @@ import { EventsManager } from './EventsManager';
 
 export class Trans<Locale extends string = string> extends EventsManager {
   locale: Locale;
+
+  errorsMode: ErrorsMode;
 
   private translations: Record<Locale, Content | DynamicContent>;
 
@@ -40,9 +42,11 @@ export class Trans<Locale extends string = string> extends EventsManager {
     translations: Record<Locale, Content> | Record<Locale, DynamicContent>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
+    errorsMode?: ErrorsMode;
   }): Promise<void> {
-    const { translations, locale, pluralRecord } = params;
+    const { translations, locale, pluralRecord, errorsMode = 'console' } = params;
     const { [locale]: content } = translations;
+    this.errorsMode = errorsMode;
     this.translations = translations;
     this.pluralRecord = pluralRecord;
     this.locale = locale;
@@ -92,7 +96,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
             )}; rootResult: "${rootResult}"; rootResult as a json: ${JSON.stringify(rootResult)}`
           );
         },
-        errorsMode,
+        errorsMode || this.errorsMode,
         `full path: "${[module, path].filter(Boolean).join('.')}"; translate path: "${path}";`
       );
     };

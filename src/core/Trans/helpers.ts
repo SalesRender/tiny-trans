@@ -30,12 +30,16 @@ export const getContent = (content: Content | string, path: string): Content | s
   return getContentRecursive(content, pathArray);
 };
 
-export const validate = (callback: () => string, errorsMode: ErrorsMode = 'throw', extra = ''): string | never => {
+export const validate = (callback: () => string, errorsMode: ErrorsMode, extra = ''): string | never => {
   try {
     return callback();
   } catch (e) {
     if (errorsMode === 'ignore') return '';
-    const error = new Error([`${e.message}`, extra].filter(Boolean).join('. '));
+    const error = new Error([e.message, extra].filter(Boolean).join('. '));
+    if (errorsMode === 'console') {
+      console.error(error); // eslint-disable-line no-console
+      return '';
+    }
     if (errorsMode === 'throw') throw error;
     if (typeof errorsMode === 'function') return errorsMode(error);
     throw new InvalidErrorMode(`errorsMode: "${errorsMode}"; as a json: ${JSON.stringify(errorsMode)}`);
