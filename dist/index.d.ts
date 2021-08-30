@@ -13,7 +13,7 @@ export type Variables = Record<string, string>;
 export type ErrorsMode = 'ignore' | 'throw' | ((error: TransError) => string);
 export type PluralContent = Partial<Record<Intl.LDMLPluralRule, string>>;
 export type PluralFn = (count: number, locale: string) => Intl.LDMLPluralRule;
-export type Handler = () => void;
+export type Handler = ((...args: unknown[]) => void) | (() => void);
 export type LoadStartEvent = 'loadstart';
 export type LoadEndEvent = 'loadend';
 export type ChangeLocaleEvent = 'change-locale';
@@ -26,11 +26,23 @@ export declare class EventsManager {
 
   private _getHandlers(event: Event, handler: Handler): Handler[];
 
-  addEventListener(event: Event, handler: Handler): void;
+  addEventListener(event: LoadEndEvent, handler: () => void): void;
+
+  addEventListener(event: LoadStartEvent, handler: () => void): void;
+
+  addEventListener(event: ChangeLocaleEvent, handler: (locale: string) => void): void;
+
+  addEventListener(event: InitEvent, handler: (locale: string) => void): void;
 
   removeEventListener(event: Event, handler: Handler): void;
 
-  protected emit(event: Event): void;
+  protected emit(event: ChangeLocaleEvent, locale: string): void;
+
+  protected emit(event: InitEvent, locale: string): void;
+
+  protected emit(event: LoadEndEvent): void;
+
+  protected emit(event: LoadStartEvent): void;
 }
 
 export enum Config {

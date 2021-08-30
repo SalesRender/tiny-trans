@@ -250,14 +250,14 @@ type Translate<T extends Variables = Variables> = (
 You can listen trans events. They will be helpful for creating a lib for any frameworks
 * `loadstart` Triggered before only dynamic importing
 * `loadend` Triggered after only dynamic importing
-* `change-locale` Triggered every time by `changeLocale` method but after `loadend` 
-* `init` Triggered single time in the end by `init` method
+* `change-locale` Triggered every time by `changeLocale` method but after `loadend`. It takes a `locale` as a first argument
+* `init` Triggered single time in the end by `init` method. It takes a `locale` as a first argument
 
 ```
 // To add
-trans.addEventListener('loadstart', () => void)
+trans.addEventListener('init', (locale: string) => void)
 
 // To remove
-trans.removeEventListener('loadstart', () => void)
+trans.removeEventListener('init', (locale: string) => void)
 ```
 

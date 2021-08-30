@@ -49,14 +49,14 @@ export class Trans<Locale extends string = string> extends EventsManager {
     this.contentPreparer = new ContentPreparer<Locale>();
     await this._setContent(content);
     this.initial = true;
-    this.emit('init');
+    this.emit('init', locale);
   }
 
   async changeLocale(locale: Locale): Promise<void> {
     const { [locale]: content } = this.translations;
     this.locale = locale;
     await this._setContent(content);
-    this.emit('change-locale');
+    this.emit('change-locale', locale);
   }
 
   createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T> {

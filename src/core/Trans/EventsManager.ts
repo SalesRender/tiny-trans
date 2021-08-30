@@ -1,4 +1,4 @@
-export type Handler = () => void;
+export type Handler = ((...args: unknown[]) => void) | (() => void);
 export type LoadStartEvent = 'loadstart';
 export type LoadEndEvent = 'loadend';
 export type ChangeLocaleEvent = 'change-locale';
@@ -17,6 +17,14 @@ export class EventsManager {
     return this.handlersMap.get(event).filter((h) => h !== handler);
   }
 
+  addEventListener(event: LoadEndEvent, handler: () => void): void;
+
+  addEventListener(event: LoadStartEvent, handler: () => void): void;
+
+  addEventListener(event: ChangeLocaleEvent, handler: (locale: string) => void): void;
+
+  addEventListener(event: InitEvent, handler: (locale: string) => void): void;
+
   addEventListener(event: Event, handler: Handler): void {
     if (this.handlersMap.has(event)) {
       const handlers = this._getHandlers(event, handler);
@@ -34,10 +42,18 @@ export class EventsManager {
     }
   }
 
-  protected emit(event: Event): void {
+  protected emit(event: ChangeLocaleEvent, locale: string): void;
+
+  protected emit(event: InitEvent, locale: string): void;
+
+  protected emit(event: LoadEndEvent): void;
+
+  protected emit(event: LoadStartEvent): void;
+
+  protected emit(event: Event, ...args: unknown[]): void {
     if (this.handlersMap.has(event)) {
       const handlers = this.handlersMap.get(event);
-      handlers.forEach((handler) => handler(), this);
+      handlers.forEach((handler) => handler(...args), this);
     }
   }
 }
