@@ -8,6 +8,7 @@ export const preparePath = (path: string): PathArray => path.split('.');
 export const parsePath = (path: string | TemplateStringsArray): string => {
   if (Array.isArray(path)) return path[0];
   if (typeof path === 'string') return path;
+  if (path === undefined) return '';
   throw new InvalidPath(`invalid path: ${path}, path as json: ${JSON.stringify(path)}`);
 };
 
