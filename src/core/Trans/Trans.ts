@@ -59,7 +59,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
     this.emit('change-locale', locale);
   }
 
-  createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T> {
+  createTranslate<T extends Variables = Variables>(module?: string | TemplateStringsArray): Translate<T> {
     const parsedPath = parsePath(module);
     const content = getContent(this.content, parsedPath);
 

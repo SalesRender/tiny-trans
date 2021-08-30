@@ -76,5 +76,5 @@ export declare class Trans<Locale extends string = string> extends EventsManager
 
   changeLocale(locale: Locale): Promise<void>;
 
-  createTranslate<T extends Variables = Variables>(module: string | TemplateStringsArray): Translate<T>;
+  createTranslate<T extends Variables = Variables>(module?: string | TemplateStringsArray): Translate<T>;
 }
