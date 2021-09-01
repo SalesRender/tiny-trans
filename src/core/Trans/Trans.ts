@@ -57,6 +57,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
   }
 
   async changeLocale(locale: Locale): Promise<void> {
+    if (!this.initial) return;
     const { [locale]: content } = this.translations;
     this.locale = locale;
     await this._setContent(content);
