@@ -66,13 +66,13 @@ export class Trans<Locale extends string = string> extends EventsManager {
 
   createTranslate<T extends Variables = Variables>(module?: string | TemplateStringsArray): Translate<T> {
     const parsedPath = parsePath(module);
-    const _content = getContent(this.content, parsedPath);
+    let _content = getContent(this.content, parsedPath);
 
     return (path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
       // for loading case
       if (!this.initial) return '';
 
-      const content = _content || getContent(this.content, parsedPath);
+      const content = _content || (_content = getContent(this.content, parsedPath));
 
       const { errorsMode, count: _count, variables } = options;
       const count = 'count' in options ? _count || 0 : _count;
