@@ -57,7 +57,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
   }
 
   async changeLocale(locale: Locale): Promise<void> {
-    if (!this.initial) return;
+    if (!this.initial || !this.translations?.[locale]) return;
     const { [locale]: content } = this.translations;
     this.locale = locale;
     await this._setContent(content);
@@ -66,13 +66,16 @@ export class Trans<Locale extends string = string> extends EventsManager {
 
   createTranslate<T extends Variables = Variables>(module?: string | TemplateStringsArray): Translate<T> {
     const parsedPath = parsePath(module);
-    const content = getContent(this.content, parsedPath);
+    const _content = getContent(this.content, parsedPath);
 
     return (path: string | TemplateStringsArray, options: TranslateOptions<T> = {}): string => {
       // for loading case
-      if (!this.initial) return null;
+      if (!this.initial) return '';
 
-      const { errorsMode, count, variables } = options;
+      const content = _content || getContent(this.content, parsedPath);
+
+      const { errorsMode, count: _count, variables } = options;
+      const count = 'count' in options ? _count || 0 : _count;
       return validate(
         () => {
           const { locale, pluralRecord } = this;

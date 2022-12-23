@@ -21,9 +21,9 @@ You can use different files for translates. Below I use follow example files
       "title": "Заголовок",
       "description": "Описание ${desc} ${name}",
       "plural": {
-        "zero": "ноль бананов",
-        "one": "один банан",
-        "two": "два банана",
+        "zero": "${COUNT} бананов",
+        "one": "${COUNT} банан",
+        "two": "${COUNT} банана",
         "few": "${COUNT} банана",
         "many": "${COUNT} бананов",
         "other": "${COUNT} бананов"
@@ -43,9 +43,9 @@ You can use different files for translates. Below I use follow example files
       "title": "Title",
       "description": "Description ${desc} ${name}",
       "plural": {
-        "zero": "zero bananas",
-        "one": "one banane",
-        "two": "two bananas",
+        "zero": "${COUNT} bananas",
+        "one": "${COUNT} banane",
+        "two": "${COUNT} bananas",
         "few": "${COUNT} bananas",
         "many": "${COUNT} bananas",
         "other": "${COUNT} bananas"
