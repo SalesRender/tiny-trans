@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import { Trans } from './Trans';
 
 const translations = {
@@ -46,8 +45,8 @@ const translations = {
 
 describe('Trans', () => {
   describe('basis', () => {
-    const trans = new Trans();
-    trans.init({ translations, locale: 'ru' });
+    const trans = new Trans({ translations, locale: 'ru' });
+    trans.init();
 
     it('init', () => {
       expect(trans.locale).toBe('ru');
@@ -62,8 +61,8 @@ describe('Trans', () => {
   });
 
   describe('main', () => {
-    const trans = new Trans();
-    trans.init({ translations, locale: 'en', errorsMode: 'throw' });
+    const trans = new Trans({ translations, locale: 'en', errorsMode: 'throw' });
+    trans.init();
 
     describe('create translate', () => {
       it('case 1', () => {

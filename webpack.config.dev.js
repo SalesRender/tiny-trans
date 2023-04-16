@@ -11,7 +11,7 @@ const src = path.join(__dirname, 'src');
 module.exports = {
   stats: 'minimal',
   context: src,
-  entry: './index.js',
+  entry: './index.ts',
   output: {
     path: dist,
     publicPath: `http://${host}:${port}/`,

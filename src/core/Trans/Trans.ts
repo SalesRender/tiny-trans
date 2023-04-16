@@ -1,4 +1,4 @@
-import { Content, DynamicContent, ErrorsMode, PluralFn, Translate, TranslateOptions, Variables } from '../types';
+import { Content, AsyncContent, ErrorsMode, PluralFn, Translate, TranslateOptions, Variables } from '../types';
 import { getContent, parsePath, validate } from './helpers';
 import { InvalidTranslate } from '../errors';
 import { ContentPreparer } from '../ContentPreparer';
@@ -9,7 +9,7 @@ export class Trans<Locale extends string = string> extends EventsManager {
 
   errorsMode: ErrorsMode;
 
-  private translations: Record<Locale, Content | DynamicContent>;
+  private translations: Record<Locale, Content | AsyncContent>;
 
   private pluralRecord: Record<Locale, PluralFn>;
 
@@ -19,41 +19,41 @@ export class Trans<Locale extends string = string> extends EventsManager {
 
   content: Content;
 
-  constructor() {
+  constructor(params: {
+    translations: Record<Locale, Content> | Record<Locale, AsyncContent>;
+    locale: Locale;
+    pluralRecord?: Record<Locale, PluralFn>;
+    errorsMode?: ErrorsMode;
+  }) {
     super();
     this.initial = false;
     this.changeLocale = this.changeLocale.bind(this);
     this._setContent = this._setContent.bind(this);
     this.init = this.init.bind(this);
     this.createTranslate = this.createTranslate.bind(this);
+    const { translations, locale, pluralRecord, errorsMode = 'console' } = params;
+    this.errorsMode = errorsMode;
+    this.translations = translations;
+    this.pluralRecord = pluralRecord;
+    this.locale = locale;
+    this.contentPreparer = new ContentPreparer<Locale>();
   }
 
-  private async _setContent<T extends Content>(content: T | (() => Promise<{ default: T }>)): Promise<void> {
+  private async _setContent<T extends Content>(content: T | (() => Promise<T>)): Promise<void> {
     if (typeof content === 'function') {
       this.emit('loadstart');
-      this.content = (await content()).default;
+      this.content = await content();
       this.emit('loadend');
     } else {
       this.content = content;
     }
   }
 
-  async init(params: {
-    translations: Record<Locale, Content> | Record<Locale, DynamicContent>;
-    locale: Locale;
-    pluralRecord?: Record<Locale, PluralFn>;
-    errorsMode?: ErrorsMode;
-  }): Promise<void> {
-    const { translations, locale, pluralRecord, errorsMode = 'console' } = params;
-    const { [locale]: content } = translations;
-    this.errorsMode = errorsMode;
-    this.translations = translations;
-    this.pluralRecord = pluralRecord;
-    this.locale = locale;
-    this.contentPreparer = new ContentPreparer<Locale>();
+  async init(): Promise<void> {
+    const { [this.locale]: content } = this.translations;
     await this._setContent(content);
     this.initial = true;
-    this.emit('init', locale);
+    this.emit('init', this.locale);
   }
 
   async changeLocale(locale: Locale): Promise<void> {

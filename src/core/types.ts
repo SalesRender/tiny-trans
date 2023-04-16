@@ -1,8 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import { TransError } from './errors';
 
-export type Content = Record<string, unknown>;
-export type DynamicContent = () => Promise<{ default: Content }>;
+export type Content = {
+  [key: string]: string | Content;
+};
+export type AsyncContent = () => Promise<Content>;
 export type Variables = Record<string, string>;
 export type ErrorsMode = 'ignore' | 'throw' | 'console' | ((error: TransError) => string);
 export type PluralContent = Partial<Record<Intl.LDMLPluralRule, string>>;
@@ -70,11 +72,14 @@ export declare class Trans<Locale extends string = string> extends EventsManager
 
   content: Content;
 
-  init(params: {
-    translations: Record<Locale, Content> | Record<Locale, DynamicContent>;
+  constructor(params: {
+    translations: Record<Locale, Content> | Record<Locale, AsyncContent>;
     locale: Locale;
     pluralRecord?: Record<Locale, PluralFn>;
-  }): Promise<void>;
+    errorsMode?: ErrorsMode;
+  });
+
+  init(): Promise<void>;
 
   changeLocale(locale: Locale): Promise<void>;
 
