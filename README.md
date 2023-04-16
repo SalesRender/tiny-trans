@@ -208,7 +208,7 @@ translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // re
 
 ## API
 ### Methods
-#### init
+#### constructor
 
 ```
 type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
@@ -227,7 +227,10 @@ constructor(params: {
   */
   pluralRecord?: Record<Locale, PluralFn>;
 })
- 
+```
+#### init
+Download dynamic files
+```
 init(): Promise<void> 
 ```
 
