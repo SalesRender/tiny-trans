@@ -69,11 +69,11 @@ enum Locale {
   en = 'en',
 }
 
-const trans = new Trans<Locale>();
-await trans.init({
+const trans = new Trans<Locale>({
   translations: { ru, en },
   locale: Locale.en,
 });
+await trans.init();
 ```
 
 ### Creating with dynamic imports
@@ -84,11 +84,32 @@ enum Locale {
   en = 'en',
 }
 
-const trans = new Trans<Locale>();
-await trans.init({
-  translations: { ru: () => import('./lang_ru.json'), en: () => import('./lang_en.json') },
+const trans = new Trans<Locale>({
+  translations: { 
+    ru: () => new Promise((resolve) => import('./lang_ru.json').then((res) => resolve(res.default))), 
+    en: () => new Promise((resolve) => import('./lang_en.json').then((res) => resolve(res.default))), 
+  },
   locale: Locale.en,
 });
+await trans.init();
+```
+
+or you can use fetch for dynamic download 
+
+```
+enum Locale {
+  ru = 'ru',
+  en = 'en',
+}
+
+const trans = new Trans<Locale>({
+  translations: { 
+    ru: async () => await fetch('url_of_my_translate_ru.json'), 
+    en: async () => await fetch('url_of_my_translate_en.json'), 
+  },
+  locale: Locale.en,
+});
+await trans.init();
 ```
 
 ### Creating with custom pluralization
@@ -103,12 +124,12 @@ enum Locale {
   en = 'en',
 }
 
-const trans = new Trans<Locale>();
-await trans.init({
+const trans = new Trans<Locale>({
   translations: { ru, en },
   locale: Locale.en,
   pluralRecord: { ru: (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other", en: (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other" }
 });
+await trans.init();
 ```
 
 ### Translate
