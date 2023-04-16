@@ -212,7 +212,8 @@ translate(`plural`, { errorsMode: (error: TransError) => 'handle error' }) // re
 
 ```
 type PluralFn = (count: number, locale: string) => "zero" | "one" | "two" | "few" | "many" | "other";
-init(params: {
+
+constructor(params: {
   /**
   * for example: { ru: { test: 'тест' }, en: { test: 'test' } } 
   */
@@ -225,7 +226,9 @@ init(params: {
   * If you want you can pass custom plural hanlders
   */
   pluralRecord?: Record<Locale, PluralFn>;
-}): Promise<void> 
+})
+ 
+init(): Promise<void> 
 ```
 
 #### changeLocale
@@ -247,7 +250,7 @@ type ErrorsMode = 'ignore' | 'throw' | 'console' | ((error: TransError) => strin
 
 type TranslateOptions<T extends Variables = Variables> = {
   /**
-   * ignore the error, handle error, show in the console or throw error (by default)
+   * ignore the error, handle error, show in the console or throw error (throw by default)
    * */
   errorsMode?: ErrorsMode;
   /**
@@ -276,9 +279,15 @@ You can listen trans events. They will be helpful for creating a lib for any fra
 
 ```
 // To add
-trans.addEventListener('init', (locale: string) => void)
+trans.addEventListener('loadstart', () => void);
+trans.addEventListener('loadend', () => void);
+trans.addEventListener('change-locale', (locale: string) => void);
+trans.addEventListener('init', (locale: string) => void);
 
 // To remove
-trans.removeEventListener('init', (locale: string) => void)
+trans.removeEventListener('loadstart', () => void);
+trans.removeEventListener('loadend', () => void);
+trans.removeEventListener('change-locale', (locale: string) => void);
+trans.removeEventListener('init', (locale: string) => void);
 ```
 
