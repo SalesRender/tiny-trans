@@ -26,7 +26,7 @@ export class ContentPreparer<Locale extends string> {
   }
 
   setVariables(variables: Variables): this {
-    if (!variables || typeof variables !== 'object') return this;
+    if (!variables || typeof variables !== 'object' || !this._content) return this;
     if (typeof this._content !== 'string') {
       throw new InvalidTranslate(`invalid content: "${this._content}"; as a json: ${JSON.stringify(this._content)}`);
     }
